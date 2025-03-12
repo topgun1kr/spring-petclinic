@@ -32,12 +32,23 @@ pipeline {
         stage('SSH Publish') {
            steps {
                     echo 'SSH Publish'
-                    shPublisher(publishers: [sshPublisherDesc(configName: 'target', transfers: [sshTransfer(cleanRemote: false, excludes: '', 
-                    execCommand: '''fuser -k 8080/tcp
-                    export BUILD_ID=PetClinic
-                    nohup java -jar /home/ubuntu/deploy/spring-petclinic-3.3.0-SNAPSHOT.jar >> nohup.out 2>&1 &''', 
-                    execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', 
-                    remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/*')], usePromotionTimestamp: false, 
+                    sshPublisher(publishers: [sshPublisherDesc(configName: 'target',
+                    transfers: [sshTransfer(cleanRemote: false,
+                    excludes: '',
+                    execCommand: '''
+                    fuser -k 8080/tcp
+                    export BUILD_ID=Petclinic-Pipeline
+                    nohup java -jar /home/ubuntu/deploy/spring-petclinic-2.7.3.BUILD-SNAPSHOT.jar >> nohup.out 2>&1 &''',
+                    execTimeout: 120000,
+                    flatten: false,
+                    makeEmptyDirs: false,
+                    noDefaultExcludes: false,
+                    patternSeparator: '[, ]+',
+                    remoteDirectory: 'deploy',
+                    remoteDirectorySDF: false,
+                    removePrefix: 'target',
+                    sourceFiles: 'target/*.jar')],
+                    usePromotionTimestamp: false,
                     useWorkspaceInPromotion: false, verbose: false)])
             }
             
