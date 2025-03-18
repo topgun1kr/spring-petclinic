@@ -44,7 +44,7 @@ pipeline {
                     makeEmptyDirs: false,
                     noDefaultExcludes: false,
                     patternSeparator: '[, ]+',
-                    remoteDirectory: 'deploy',
+                    remoteDirectory: '',
                     remoteDirectorySDF: false,
                     removePrefix: 'target',
                     sourceFiles: 'target/*.jar')],
