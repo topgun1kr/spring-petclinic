@@ -28,6 +28,17 @@ pipeline {
             }            
             
         }
+        //docker image 생성
+        stage('Docker Image Build') {
+            steps {
+                dir("${env.WORKSPACE}") {
+                    sh '''
+                      docker build -t spring-petclinic:$build_NUMBER .
+                      docker tag spring-petclinic:$build_NUMBER topgun1kr/spring-petclinic:latest
+                      '''
+                }
+            }
+        }    
         stage('SSH Publish') {
            steps {
                     echo 'SSH Publish'
@@ -37,7 +48,7 @@ pipeline {
                     execCommand: '''
                     fuser -k 8080/tcp
                     export BUILD_ID=Petclinic-Pipeline
-                    nohup java -jar /home/ubuntu/deploy/spring-petclinic-2.7.3.BUILD-SNAPSHOT.jar >> nohup.out 2>&1 &''',
+                    nohup java -jar spring-petclinic-3.4.0-SNAPSHOT.jar >> nohup.out 2>&1 &''',
                     execTimeout: 120000,
                     flatten: false,
                     makeEmptyDirs: false,
