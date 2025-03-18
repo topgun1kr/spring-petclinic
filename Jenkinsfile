@@ -25,8 +25,7 @@ pipeline {
             steps {
                 echo 'Maven Build'
                 sh 'mvn -Dmaven.test.failuer.ignore=true clean package'
-            }
-            
+            }            
             
         }
         stage('SSH Publish') {
