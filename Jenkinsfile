@@ -21,9 +21,9 @@ pipeline {
                 }
             }
         }
-        stage('Maven Build') {
+        stage('Build') {
             steps {
-                echo 'Maven Build'
+                echo 'Build'
                 sh 'mvn -Dmaven.test.failuer.ignore=true clean package'
             }
             post {
