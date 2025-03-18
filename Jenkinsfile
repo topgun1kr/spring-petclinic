@@ -25,7 +25,12 @@ pipeline {
             steps {
                 echo 'Maven Build'
                 sh 'mvn -Dmaven.test.failuer.ignore=true clean package'
-            }            
+            }
+            post {
+               success {
+                   junit 'target/surefire-reports/**/*.xml'
+               }
+            }
             
         }
         //docker image 생성
