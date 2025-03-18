@@ -58,16 +58,16 @@ pipeline {
                 '''
             }
         }
-        //stage('Remove Docker Image') {
-         //   steps {
-        //        sh '''
-       //         docker rmi spring-petclinic:$BUILD_NUMBER
-           // docker rmi spring-petclinic:latest
+        stage('Remove Docker Image') {
+            steps {
+               sh '''
+                  docker rmi spring-petclinic:$BUILD_NUMBER
+               //   docker rmi spring-petclinic:latest
                // docker rmi //topgun1kr/spring-petclinic:$BUILD_NUMBER
-       //         docker rmi topgun1kr/spring-petclinic:latest
+                  docker rmi topgun1kr/spring-petclinic:latest
                 '''
-        //    }
-       // }
+            }
+        }
 
 
 
@@ -77,16 +77,16 @@ pipeline {
                 echo 'SSH Pubilsh'
                 sshPublisher(publishers: [sshPublisherDesc(configName: 'target', 
                 transfers: [sshTransfer(cleanRemote: false, excludes: '',
-             //    execCommand: '''
-             //   docker rm -f $(docker ps -aq)
-            //    docker rmi $(docker images -q)
-            //    docker run -d -p 8080:8080 --name spring-petclinic topgun1kr/spring-petclinic:latest
-            //    ''',
+                execCommand: '''
+                docker rm -f $(docker ps -aq)
+                docker rmi $(docker images -q)
+                docker run -d -p 8080:8080 --name spring-petclinic topgun1kr/spring-petclinic:latest
+                ''',
                                         
-                execCommand: '''fuser -k 8080/tcp
-                export BUILD_ID=PetClinic
+             //   execCommand: '''fuser -k 8080/tcp
+           //     export BUILD_ID=PetClinic
 
-                nohup java -jar spring-petclinic-3.4.0-SNAPSHOT.jar >> nohup.out 2>&1 &''',
+            //    nohup java -jar spring-petclinic-3.4.0-SNAPSHOT.jar >> nohup.out 2>&1 &''',
                 execTimeout: 120000, 
                 flatten: false, 
                 makeEmptyDirs: false,
