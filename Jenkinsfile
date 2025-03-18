@@ -58,7 +58,14 @@ pipeline {
                 '''
             }
         }
-
+        stage('Remove Docker Image') {
+            steps {
+                sh '''
+                docker rmi topgun1kr/spring-petclinic:$BUILD_NUMBER
+                docker rmi topgun1kr/spring-petclinic:latest
+                '''
+            }
+        }
 
 
 
