@@ -87,7 +87,7 @@ pipeline {
                     sh '''
                     aws deploy create-deployment --application-name TEAM2_deploy \
                     --deployment-config-name CodeDeployDefault.OneAtATime \
-                    --service-role-arn ############
+                    --service-role-arn arn:aws:iam::257307634175:role/user00-codedeploy-service-role
                     --deployment-group-name TEAM2_deploy_group \
                     --ignore-application-stop-failures \
                     --s3-location bucket=team2-codedeploy-bucket,bundleType=zip,key=scripts.zip
