@@ -68,7 +68,34 @@ pipeline {
                 '''
             }
         }        
-        
+        stage('Upload S3') {
+        steps {
+            echo "Upload to S3"
+            dir("${env.WORKSPACE}") {
+                sh 'zip -r scripts.zip ./scripts appspec.yml'
+                withAWS(region:"${REGION}",credentials:"${AWS_CREDENTIALS_NAME}"){
+                    s3Upload(file:"scripts.zip", bucket:"team2-codedeploy-bucket")
+                    }
+                    sh 'rm -rf ./scripts.zip' 
+                }
+            }    
+        }
+        stage('Codedeploy Workload') {
+        steps {
+            echo "Codedeploy Workload"   
+                withAWS(region:"${REGION}",credentials:"${AWS_CREDENTIALS_NAME}"){
+                    sh '''
+                    aws deploy create-deployment --application-name TEAM2_deploy \
+                    --deployment-config-name CodeDeployDefault.OneAtATime \
+                    --deployment-group-name TEAM2_deploy_group \
+                    --ignore-application-stop-failures \
+                    --s3-location bucket=team2-codedeploy-bucket,bundleType=zip,key=scripts.zip
+                    '''
+                }
+                sleep(10) // sleep 10s
+            }
+        }
+
     }
 }
     
